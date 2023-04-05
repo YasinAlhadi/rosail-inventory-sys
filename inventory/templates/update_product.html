@@ -1,0 +1,97 @@
+{% extends 'base_tmp.html' %}
+{% block content %}
+<div class="row">
+    <form method="POST" action="" class="needs-validation" novalidate>
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Add Product</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    {{ form.name.label(class="form-label") }}
+                    {% if form.name.errors %}
+                    {{ form.name(class="form-control form-control-lg is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.name(class="form-control form-control-lg")}}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.price.label(class="form-label") }}
+                    {% if form.price.errors %}
+                    {{ form.price(class="form-control form-control-lg is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.price.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.price(class="form-control form-control-lg")}}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.quantity.label(class="form-label") }}
+                    {% if form.quantity.errors %}
+                    {{ form.quantity(class="form-control form-control-lg is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.quantity.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.quantity(class="form-control form-control-lg")}}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.category.label(class="form-label") }}
+                    {% if form.category.errors %}
+                    {{ form.category(class="form-control form-control-lg is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.category.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.category(class="form-control form-control-lg")}}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.brand.label(class="form-label") }}
+                    {% if form.brand.errors %}
+                    {{ form.brand(class="form-control form-control-lg is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.brand.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.brand(class="form-control form-control-lg")}}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.description.label(class="form-label") }}
+                    {% if form.description.errors %}
+                    {{ form.description(class="form-control form-control-lg is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.description.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.description(class="form-control form-control-lg")}}
+                    {% endif %}
+                </div>
+            </div>
+        </fieldset><br />
+        <div class="col-12">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,65 @@
+html,body{
+  background-image: url('../images/background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  font-family: 'Numans', sans-serif;
+  }
+  
+
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.card{
+  height: 370px;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 400px;
+  background-color: rgba(0,0,0,0.5) !important;
+  }
+  
+.card-header h3{
+  color: white;
+}
+
+.remember{
+  color: white;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.footer-container {
+    background-color: #0f0f0f;
+    height: 60px; 
+    width: 100%;
+    color: azure;
+    position: fixed;  
+    display:flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    bottom: 0;
+}

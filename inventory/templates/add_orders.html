@@ -1,0 +1,76 @@
+{% extends 'base_tmp.html' %}
+{% block content %}
+<div class="row">
+    <form method="POST" action="" class="needs-validation" novalidate>
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Add Items to order</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    {{ form.product.label(class="form-label") }}
+                    {% if form.product.errors %}
+                    {{ form.product(class="form-control form-control-lg is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.product.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.product(class="form-control form-control-lg")}}
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {{ form.quantity.label(class="form-label") }}
+                    {% if form.quantity.errors %}
+                    {{ form.quantity(class="form-control form-control-lg is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.quantity.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.quantity(class="form-control form-control-lg")}}
+                    {% endif %}
+                </div>
+                
+            </div>
+        </fieldset><br />
+        <div class="col-12">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    </div>
+    <hr>
+    <h2>Items</h2>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.price }}</td>
+                        <td>{{ item.total }}</td>
+                        <td>
+                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock content %}
