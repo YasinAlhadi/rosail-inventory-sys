@@ -1,24 +1,68 @@
 {% extends 'base_tmp.html' %}
 {% block content %}
 <br />
-<div class="row row-cols-1 row-cols-md-3 justify-content-center">
-  <div class="card text-center mb-3" style="width: 15rem;">
-    <img src="../static/images/product.png" class="card-img-top" alt="...">
-    <div class="card-body">
-      <a href="#" class="btn btn-primary">Products</a>
-    </div>
+<h2>Products List</h2>
+<div class="row">
+  <div class="col-md-8">
+    <form action="{{url_for('products.search_results')}}">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search" name="query">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+      </div>
+    </form>
   </div>
-  <div class="card text-center mb-3" style="width: 15rem;">
-    <img src="../static/images/order.png" class="card-img-top" alt="...">
-    <div class="card-body">
-      <a href="#" class="btn btn-primary">Order</a>
-    </div>
+  <div class="col-md-4">
+    <a href="{{url_for('orders.view_order')}}" class="btn btn-primary justify-content-right">
+      {% if 'items' not in session %}
+      0
+      {% else %}
+      {{ session['items']|length }}
+      {% endif %}
+      Item/s in order
+    </a>
   </div>
-  <div class="card text-center mb-3" style="width: 15rem;">
-    <img src="../static/images/transaction.png" class="card-img-top" alt="...">
-    <div class="card-body">
-      <a href="#" class="btn btn-primary">Transactions</a>
-    </div>  
+  <div class="col-md-12">
+    <p class="text-muted">Showing {{ products|length }} of {{ products|length }} products</p>
   </div>
 </div>
+
+<div class="col-md-12">
+
+</div>
+<br />
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Category</th>
+      <th scope="col">Brand</th>
+      <th scope="col">description</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price }}</td>
+      <td>{{ product.quantity }}</td>
+      <td>{{ product.category.name }}</td>
+      <td>{{ product.brand.name }}</td>
+      <td>{{ product.description }}</td>
+      <td>
+        <form action="{{ url_for('orders.create_order') }}" method="post">
+          {{ form.hidden_tag() }}
+          <input type="hidden" name="name_p" value="{{ product.name }}">
+          <button type="submit" class="btn btn-secondary btn-sm m-1">Add to order</button>
+          <label for="quantity">Quantity:</label>
+          {{ form.quantity(class="form-control form-control-sm")}}
+        </form>
+      </td>
+    </tr>
+    </div>
+  </tbody>
+  {% endfor %}
+</table>
 {% endblock content %}

@@ -3,10 +3,11 @@
 from flask import Blueprint, render_template, url_for, flash, redirect, request
 from inventory.models.product import Product, Category, Brand
 from inventory.products.forms import ProductForm, CategoryForm, BrandForm
-from inventory import db
+from inventory import db, search
 from flask_login import login_required, current_user
 
 prod = Blueprint('products', __name__)
+
 
 @prod.route('/products')
 def products():
@@ -16,12 +17,24 @@ def products():
     user = current_user
     return render_template('products.html', title='Products', products=products, user=user)
 
+
+@prod.route('/products/results')
+def search_results():
+    """fuction to impelment search"""
+    user = current_user
+    query = request.args.get('query')
+    products = Product.query.msearch(
+        query, fields=['name', 'description', 'price'], limit=20).all()
+    return render_template('search_results.html', title='Search Results', products=products, user=user)
+
+
 @prod.route('/products/new', methods=['GET', 'POST'])
 def new_product():
     """This function defines the new product route"""
     form = ProductForm()
     if form.validate_on_submit():
-        product = Product(name=form.name.data, price=form.price.data, quantity=form.quantity.data, category_id=form.category.data, brand_id=form.brand.data, description=form.description.data)
+        product = Product(name=form.name.data, price=form.price.data, quantity=form.quantity.data,
+                          category_id=form.category.data, brand_id=form.brand.data, description=form.description.data)
         db.session.add(product)
         db.session.commit()
         flash('Product created successfully!', 'success')
@@ -30,6 +43,7 @@ def new_product():
     brands = Brand.query.all()
     user = current_user
     return render_template('add_product.html', title='New Product', categories=categories, brands=brands, form=form, user=user)
+
 
 @prod.route('/products/<int:product_id>/update', methods=['GET', 'POST'])
 def update_product(product_id):
@@ -46,7 +60,7 @@ def update_product(product_id):
         product.description = form.description.data
         db.session.commit()
         flash('Product updated successfully!', 'success')
-        return redirect(url_for('products.product', product_id=product.id))
+        return redirect(url_for('products.products', product_id=product.id))
     elif request.method == 'GET':
         form.name.data = product.name
         form.price.data = product.price
@@ -56,7 +70,8 @@ def update_product(product_id):
         form.description.data = product.description
     categories = Category.query.all()
     brands = Brand.query.all()
-    return render_template('update_product.html', title='Update Product', categories=categories, brands=brands, form=form, user=user)
+    return render_template('update_product.html', title='Update Product', categories=categories, brands=brands, form=form, user=user, product=product)
+
 
 @prod.route('/products/<int:product_id>/delete', methods=['POST'])
 def delete_product(product_id):
@@ -67,6 +82,7 @@ def delete_product(product_id):
     flash('Product deleted successfully!', 'success')
     return redirect(url_for('products.products'))
 
+
 @prod.route('/categories')
 def categories():
     """This function defines the categories route"""
@@ -74,13 +90,15 @@ def categories():
     user = current_user
     return render_template('categories.html', title='Categories', categories=categories, user=user)
 
+
 @prod.route('/categories/new', methods=['GET', 'POST'])
 def new_category():
     """This function defines the new category route"""
     user = current_user
     form = CategoryForm()
     if form.validate_on_submit():
-        category = Category(name=form.name.data, description=form.description.data)
+        category = Category(name=form.name.data,
+                            description=form.description.data)
         db.session.add(category)
         db.session.commit()
         flash('Category created successfully!', 'success')
@@ -103,7 +121,8 @@ def update_category(category_id):
     elif request.method == 'GET':
         form.name.data = category.name
         form.description.data = category.description
-    return render_template('update_category.html', title='Update Category', form=form , user=user)
+    return render_template('update_category.html', title='Update Category', form=form, user=user)
+
 
 @prod.route('/categories/<int:category_id>/delete', methods=['POST'])
 def delete_category(category_id):
@@ -114,12 +133,14 @@ def delete_category(category_id):
     flash('Category deleted successfully!', 'success')
     return redirect(url_for('products.categories'))
 
+
 @prod.route('/brands')
 def brands():
     """This function defines the brands route"""
     brands = Brand.query.all()
     user = current_user
     return render_template('brands.html', title='Brands', brands=brands, user=user)
+
 
 @prod.route('/brands/new', methods=['GET', 'POST'])
 def new_brand():
@@ -133,6 +154,7 @@ def new_brand():
         return redirect(url_for('products.brands'))
     user = current_user
     return render_template('add_brand.html', title='New Brand', form=form, user=user)
+
 
 @prod.route('/brands/<int:brand_id>/update', methods=['GET', 'POST'])
 def update_brand(brand_id):
@@ -150,6 +172,7 @@ def update_brand(brand_id):
         form.name.data = brand.name
         form.description.data = brand.description
     return render_template('update_brand.html', title='Update Brand', form=form, user=user)
+
 
 @prod.route('/brands/<int:brand_id>/delete', methods=['POST'])
 def delete_brand(brand_id):

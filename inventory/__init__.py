@@ -5,6 +5,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_msearch import Search
 
 
 app = Flask(__name__)
@@ -16,17 +17,17 @@ db = SQLAlchemy(app)
 app.app_context().push()
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-
-
-
-
+search = Search()
+search.init_app(app)
 
 from inventory.users.routes import users
 from inventory.main.routes import main
 from inventory.products.routes import prod
 from inventory.orders.routes import ord
+from inventory.sales.routes import sal
 
 app.register_blueprint(users)
 app.register_blueprint(main)
 app.register_blueprint(prod)
 app.register_blueprint(ord)
+app.register_blueprint(sal)

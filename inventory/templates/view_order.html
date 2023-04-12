@@ -1,0 +1,62 @@
+{% extends 'base_tmp.html' %}
+{% block content %}
+{% if 'items' in session %}
+<br />
+<div class="row ">
+    <div class="col-md-12">
+        <a href="{{ url_for('orders.completed_order') }}" class="btn btn-outline-dark">Confirm</a>
+        <a href="{{url_for('orders.cancel_order')}}" class="btn btn-danger">Delete all</a>
+    </div>
+<br />
+
+    
+        <p class="text-muted">Showing {{ session['items']|length }} of {{ session['items']|length }} products</p>
+
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Unit Price</th>
+            <th scope="col">Price</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, val in session['items'].items() %}
+        <tr>
+            <td>{{ val['name'] }}</td>
+            <td>{{ val['quantity'] }}</td>
+            <td>{{ val['price'] }}</td>
+            <td>{{ val['total'] }}</td>
+            <td>
+                <form action="{{url_for('orders.delete_item', name=val['name'])}}" method="post">
+                    <input type="hidden" name="product_id" value="{{ key }}">
+                    <button type="submit" class="btn btn-secondary btn-sm m-1">Remove from order</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3" class="text-right"><strong>Total Quantity</strong></td>
+            <td><strong>{{ session['all_total_quantity'] }}</strong></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="text-right"><strong>Total</strong></td>
+            <td><strong>{{ session['all_total_price'] }}</strong></td>
+        </tr>
+        
+        
+    </tbody>
+</table>
+{% else %}
+<div class="row">
+    <div class="col-md-12">
+        <p class="text-muted">No items added to order</p>
+    </div>
+</div>
+
+{% endif %}
+{% endblock content %}

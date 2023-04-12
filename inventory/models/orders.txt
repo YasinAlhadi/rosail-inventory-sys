@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """This module stores the oders"""
+import uuid
 from datetime import datetime
 from inventory import db
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from inventory.models.user import User
 import json
@@ -29,13 +30,12 @@ class Orders(db.Model):
     """This class defines table that stores the orders"""
     __tablename__ = 'orders'
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    invoice_number = Column(String(100), nullable=False, unique=True)
+    invoice_number = Column(String(100), nullable=False,
+                            unique=True, default=str(uuid.uuid4()))
     user_id = Column(Integer, ForeignKey('users.id'),
                      unique=False, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
     order = Column(JsonDict, nullable=False)
-    quantity = Column(Integer, nullable=False)
-    total_price = Column(Float, nullable=False)
     user = relationship('User', backref='orders')
 
     def __repr__(self):

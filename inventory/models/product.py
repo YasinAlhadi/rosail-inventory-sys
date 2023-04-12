@@ -7,6 +7,7 @@ from inventory import db
 
 class Product(db.Model):
     """This class defines a product by various attributes"""
+    __searchbal__ = ['name', 'description', 'price']
     __tablename__ = 'products'
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     name = Column(String(128), nullable=False)
