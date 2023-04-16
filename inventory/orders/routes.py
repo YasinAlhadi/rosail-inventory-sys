@@ -96,7 +96,7 @@ def completed_order():
     return redirect(url_for('orders.order'), user=user)
 
 
-@ord.route('/order/invoices')
+@ord.route('/invoices')
 @login_required
 def invoices():
     """This function displays the invoices"""
